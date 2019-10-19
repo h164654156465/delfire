@@ -1,20 +1,53 @@
-extends layout
 
-block content
-    h1=resource
-    p Now the resource we have
+doctype html
+html(lang='en')
+    include common/head.pug
+    +head("Starter MVP")
+    body
+
+        header
+            include common/navbar.pug
+            +navbar()
 
 
-    form(action="/resource/create" method="POST")
-        input(type="text" name="name" placeholder="Enter your name")
-        input(type="email" name="email" placeholder="Enter your email")
-        input(type="text" name="plane" placeholder="Enter your plane")
-        input(type="text" name="plane_address" placeholder="Enter your address")
-        input(type="checkbox" name="plane_level" id="cboxA") 
-        label(for="cboxA") A
-        input(type="checkbox" name="plane_level" id="cboxB") 
-        label(for="cboxB") B
-        input(type="checkbox" name="plane_level" id="cboxB") 
-        label(for="cboxC") C
-        input(type="text" name="flm_rtd" placeholder="Enter your flame retardant")
-        button(type="submit") Register your help
+        .container
+            .row.align-items.center 
+                .col-md-6.order-md-1.text-center.text-md-left.pr-md-5
+                    h1=resource
+                    p Now the resource we have
+
+
+                    form(action="/resource/create" method="POST")
+
+                        div 
+                            h4 Name:
+                            input(type="text" name="name" placeholder="Enter your name").form-control
+                            br
+                        div
+                            h4 Email:
+                            input(type="email" name="email" placeholder="Enter your email").form-control
+                            br
+                        div
+                            h4 Plane:
+                            input(type="text" name="plane" placeholder="Enter your plane").form-control
+                            br
+                        div
+                            h4 Plane address:
+                            input(type="text" name="plane_address" placeholder="Enter your address").form-control
+                            br
+                        div
+                            h4 Plain level:
+                            input(type="checkbox" name="check_list" id="cboxB" value="A")
+                            label(for="cboxA") A
+                            input(type="checkbox" name="check_list" id="cboxB" value="B") 
+                            label(for="cboxB") B
+                            input(type="checkbox" name="check_list" id="cboxB" value="C")
+                            label(for="cboxC") C
+                            br
+                        div
+                            h4 Flame retardant
+                            input(type="text" name="flm_rtd" placeholder="Enter your flame retardant").form-control
+                            button(type="submit").btn.btn-primary Register your help
+        include common/footer.pug
+        +footer()
+        

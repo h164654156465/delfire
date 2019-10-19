@@ -13,11 +13,11 @@ exports.create = async function (req, res, next) {
         email: req.body.email,
         plane: req.body.plane,
         plane_address: req.body.plane_address,
-        plane_level: req.body.plane_level,
+        plane_level: req.body.check_list,
         flm_rtd: req.body.flm_rtd
     })
 
-    console.log(resource)
+    console.log(resource.plane_level)
     await resource.save().then(function (result) {
         console.log(result)
     })
