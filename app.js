@@ -5,8 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
 
+//先註解掉資料庫
+// var mongoose = require('mongoose')
 
-var mongoose = require('mongoose')
 // mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
 //   auth: {
 //     user: process.env.COSMOSDB_USER,
@@ -18,15 +19,15 @@ var mongoose = require('mongoose')
 //   console.log(err)
 // })
 
-
-var mongoURI = 'mongodb://localhost:27017/NASA2019'
-mongoose.connect(mongoURI, { useNewUrlParser: true })
-  .then(() => {
-    console.log('Now connected to MongoDB');
-  })
-  .catch((err) => {
-    console.error('Something went wrong: ', err)
-  })
+//先註解掉資料庫
+// var mongoURI = 'mongodb://localhost:27017/NASA2019'
+// mongoose.connect(mongoURI, { useNewUrlParser: true })
+//   .then(() => {
+//     console.log('Now connected to MongoDB');
+//   })
+//   .catch((err) => {
+//     console.error('Something went wrong: ', err)
+//   })
 
 // var mongoClient = require("mongodb").MongoClient;
 // mongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, function (err, client) {
