@@ -5,4 +5,4 @@ let view = require('../controllers/viewDisasters')
 /* GET home page. */
 router.get('/', view.FirePoints);
 
-module.exports = router;
+module.exports = router; 
