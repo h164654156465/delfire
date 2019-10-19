@@ -5,11 +5,41 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
 
+
+var mongoose = require('mongoose')
+// mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
+//   auth: {
+//     user: process.env.COSMOSDB_USER,
+//     password: process.env.COSMOSDB_PASSWORD
+//   }
+// }).then(() => {
+//   console.log('Connection to CosmosDB successfully')
+// }).catch((err) => {
+//   console.log(err)
+// })
+
+
+var mongoURI = 'mongodb://localhost:27017/NASA2019'
+mongoose.connect(mongoURI, { useNewUrlParser: true })
+  .then(() => {
+    console.log('Now connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Something went wrong: ', err)
+  })
+
+// var mongoClient = require("mongodb").MongoClient;
+// mongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, function (err, client) {
+//   console.log('connect success')
+// });
+
 var indexRouter = require('./routes/index');
 var resourceRouter = require('./routes/resources')
 var disasterRouter = require('./routes/disasters')
 
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+    table
+        thead
+            tr
+                th(scope="col") name
+                th(scope="col") email
+                th(scope="col") plane
+                th(scope="col") plane_address
+                th(scope="col") plane_level
+                th(scope="col") flame retarfant
+            tr
+            tbody
+                for resource in resources
+                    tr
+                    td
+                        span #{resource.name}
+                    td
+                        span #{resource.email}
+                    td
+                        span #{resource.plane}
+                    td
+                        span #{resource.plane_address}
+                    td
+                        span #{resource.plane_level}
+                    td
+                        span #{resource.flm_rtd}
+            tbody
