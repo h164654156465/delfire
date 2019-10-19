@@ -25,8 +25,15 @@ exports.create = async function (req, res, next) {
 
 
 exports.show_userResource = function (req, res, next) {
-    Resource.find({}, function (err, resources) {
-        res.render('resource', { resources: resources })
-    })
+    // Resource.find({}, function (err, resources) {
+    //     res.render('resource', { resources: resources })
+    // })
+    
+    rescueService.get(req,res)
+}
+
+
+exports.show_userPlane = function (req,res,next) {
+    rescueService.getPlane(req,res)
 }
 

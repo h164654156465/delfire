@@ -1,0 +1,372 @@
+doctype html
+html(lang='en')
+    include common/head.pug
+    +head("Resource")
+    body
+
+        header
+            include common/navbar.pug
+            +navbar()
+        div#map
+        //- button(class="btn btn-warning" onclick="drop()") 時間一
+        //- button(class="btn btn-warning" onclick="drop()") 時間二
+        //- div#hidecontent(display:none)
+
+        style
+            include ../public/stylesheets/Disaster.css
+        script.
+            var map;
+            var markers = [];
+
+            //- var neighborhoods = !{FirePoints}
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), !{InitViewPoint});
+
+                
+                let FireStations = [
+                    { position: { lat: -28.809462, lng: 153.275054 }, map: map, title: "Fire and Rescue NSW Lismore Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -28.85301, lng: 153.556765 }, map: map, title: "Fire and Rescue NSW Ballina Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -28.647431, lng: 153.613338 }, map: map, title: "Fire and Rescue NSW Byron Bay Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -30.2988669, lng: 153.112942 }, map: map, title: "Fire and Rescue NSW Coffs Harbour Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -30.527758, lng: 151.6853234 }, map: map, title: "NSW Rural Fire Service", icon: "fire-station.png" },
+                    { position: { lat: -30.462526, lng: 152.836822 }, map: map, title: "Scotchman Rural Fire Brigade", icon: "fire-station.png" },
+                    { position: { lat: -29.7368087, lng: 151.7275328 }, map: map, title: "NSW Rural Fire Service", icon: "fire-station.png" },
+                    { position: { lat: -29.68908, lng: 152.935502 }, map: map, title: "Fire and Rescue NSW Grafton Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -29.6315814, lng: 153.0289566 }, map: map, title: "NSW Rural Fire Service", icon: "fire-station.png" },
+                    { position: { lat: -30.110147, lng: 153.189754 }, map: map, title: "Fire and Rescue NSW Woolgoolga Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -30.350919, lng: 153.0901694 }, map: map, title: "Fire and Rescue NSW Sawtell Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -28.6464668, lng: 152.0854579 }, map: map, title: "Rural Fire Service - Liston", icon: "fire-station.png" },
+                    { position: { lat: -28.920362, lng: 151.9308843 }, map: map, title: "Wallangarra Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -28.6541459, lng: 151.9345355 }, map: map, title: "Stanthorpe Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -28.862981, lng: 153.051414 }, map: map, title: "Fire and Rescue NSW Casino Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -30.3994971, lng: 152.3525086 }, map: map, title: "Ebor Rural Fire Service", icon: "fire-station.png" },
+                    { position: { lat: -30.216469, lng: 151.670271 }, map: map, title: "Fire and Rescue NSW Guyra Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -30.340552, lng: 152.712959 }, map: map, title: "Fire and Rescue NSW Dorrigo Fire Station", icon: "fire-station.png" },
+                    { position: { lat: -29.0574268, lng: 152.0130036 }, map: map, title: "NSW Rural Fire Service", icon: "fire-station.png" }
+                ];
+
+                let Fire = [
+                    {position:{lat:-30.14443, lng:152.27715},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1544, lng:152.20753},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.9857, lng:152.30516},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98454, lng:152.31314},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98513, lng:152.30913},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.9879, lng:152.31375},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.91555, lng:153.51305},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.69884, lng:152.44531},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70278, lng:152.44189},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70219, lng:152.44594},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70101, lng:152.45403},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70379, lng:152.44113},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70321, lng:152.44519},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70203, lng:152.45328},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70656, lng:152.4458},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70597, lng:152.44987},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70539, lng:152.4539},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70874, lng:152.45453},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.74402, lng:152.44878},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.74344, lng:152.45277},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10085, lng:152.24344},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10029, lng:152.24741},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10142, lng:152.23949},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1048, lng:152.24004},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10365, lng:152.24805},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10309, lng:152.252},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10934, lng:152.23244},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10876, lng:152.23648},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10818, lng:152.24052},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10354, lng:152.27309},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10295, lng:152.27713},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11388, lng:152.22485},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11273, lng:152.23293},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11216, lng:152.23691},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11158, lng:152.24101},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1133, lng:152.2289},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11726, lng:152.2254},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11668, lng:152.22945},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11611, lng:152.23347},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11553, lng:152.2375},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11143, lng:152.26624},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10909, lng:152.28261},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1218, lng:152.21782},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12123, lng:152.22188},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12064, lng:152.22595},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12006, lng:152.23003},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12989, lng:152.18539},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1293, lng:152.1895},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12461, lng:152.2224},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12402, lng:152.22649},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12344, lng:152.23059},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11581, lng:152.28394},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13266, lng:152.19025},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13209, lng:152.19427},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13151, lng:152.19835},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12741, lng:152.22707},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13324, lng:152.18614},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13721, lng:152.18265},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1366, lng:152.18689},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13543, lng:152.19505},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13997, lng:152.18752},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12707, lng:152.27777},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14335, lng:152.1881},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14274, lng:152.19232},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14611, lng:152.19298},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13435, lng:152.27512},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14947, lng:152.19368},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14886, lng:152.19791},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13713, lng:152.27985},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15283, lng:152.19438},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15222, lng:152.19861},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15163, lng:152.20277},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14107, lng:152.27649},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1405, lng:152.28049},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15558, lng:152.1993},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15498, lng:152.20349},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.9812, lng:152.31252},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98178, lng:152.30852},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98235, lng:152.30455},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.97785, lng:152.3119},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.97843, lng:152.30791},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.97901, lng:152.30391},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.07118, lng:152.92909},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16398, lng:152.28896},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16456, lng:152.28488},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16514, lng:152.28078},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16572, lng:152.27669},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16062, lng:152.28827},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16178, lng:152.28009},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16236, lng:152.276},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16294, lng:152.27196},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16409, lng:152.26387},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16642, lng:152.24745},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15727, lng:152.28751},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15957, lng:152.2713},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16306, lng:152.24673},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15617, lng:152.29172},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15674, lng:152.28767},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15733, lng:152.28362},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15906, lng:152.2715},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15282, lng:152.29099},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15398, lng:152.2829},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15512, lng:152.27489},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1534, lng:152.28696},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14889, lng:152.29431},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14946, lng:152.2903},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14831, lng:152.29832},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15004, lng:152.28627},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1478, lng:152.27771},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12292, lng:152.21368},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13184, lng:152.28564},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13112, lng:152.28148},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12238, lng:152.23097},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12167, lng:152.22685},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12096, lng:152.22275},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12025, lng:152.21864},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11955, lng:152.21458},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11884, lng:152.21051},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12701, lng:152.27809},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11899, lng:152.2318},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11829, lng:152.22772},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11687, lng:152.21953},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11758, lng:152.22363},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11616, lng:152.21539},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11545, lng:152.21129},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1163, lng:152.23666},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1156, lng:152.23262},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1149, lng:152.22858},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1142, lng:152.2245},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1135, lng:152.22043},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11699, lng:152.2347},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1163, lng:152.23064},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1156, lng:152.22658},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1149, lng:152.2225},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1136, lng:152.23549},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11291, lng:152.23149},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11222, lng:152.22746},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11152, lng:152.22342},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11082, lng:152.2193},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11023, lng:152.23643},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10954, lng:152.23244},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10885, lng:152.22841},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10815, lng:152.22437},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10745, lng:152.22026},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.11537, lng:152.28722},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10548, lng:152.22942},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10478, lng:152.22533},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1028, lng:152.23436},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1021, lng:152.23029},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10139, lng:152.22618},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.10233, lng:152.27278},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.07282, lng:152.92903},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.74657, lng:152.44853},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70974, lng:152.45508},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70903, lng:152.45091},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70833, lng:152.44675},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70762, lng:152.44257},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.71045, lng:152.45921},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70706, lng:152.45999},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70635, lng:152.45586},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70565, lng:152.45171},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70494, lng:152.44756},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70423, lng:152.44339},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70352, lng:152.43922},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70297, lng:152.45663},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70084, lng:152.44415},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.69943, lng:152.43587},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-29.70013, lng:152.44},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98948, lng:152.30351},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.99019, lng:152.30766},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98605, lng:152.30428},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98533, lng:152.30013},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98408, lng:152.31337},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98263, lng:152.30504},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98191, lng:152.30086},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.98118, lng:152.29666},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.97848, lng:152.30161},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-28.97775, lng:152.29739},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16233, lng:152.19647},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16763, lng:152.24779},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15893, lng:152.19725},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15554, lng:152.19804},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15399, lng:152.18907},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15477, lng:152.1936},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15137, lng:152.19437},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14985, lng:152.1855},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15059, lng:152.18987},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16245, lng:152.27917},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16173, lng:152.27498},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.16102, lng:152.27084},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15961, lng:152.26263},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14797, lng:152.19514},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14719, lng:152.19066},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14643, lng:152.18623},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15976, lng:152.28406},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15763, lng:152.27164},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14231, lng:152.18283},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15904, lng:152.27983},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15833, lng:152.2757},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14305, lng:152.18712},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15634, lng:152.28465},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15492, lng:152.2764},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13968, lng:152.18802},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15562, lng:152.28046},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13892, lng:152.18367},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13816, lng:152.17929},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15364, lng:152.28943},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15293, lng:152.28528},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15153, lng:152.27718},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13552, lng:152.18445},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15222, lng:152.28119},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13476, lng:152.18002},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.15022, lng:152.29008},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14952, lng:152.28598},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14815, lng:152.278},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13284, lng:152.18938},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13134, lng:152.18073},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1321, lng:152.18509},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14681, lng:152.29074},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13086, lng:152.19838},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12941, lng:152.18999},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12868, lng:152.18576},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13182, lng:152.2243},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12601, lng:152.19077},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12527, lng:152.18651},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13867, lng:152.28435},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12842, lng:152.2251},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.14003, lng:152.2923},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13936, lng:152.28838},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.1277, lng:152.22092},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13597, lng:152.28912},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13526, lng:152.28503},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.13454, lng:152.28087},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12504, lng:152.22597},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12432, lng:152.22182},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12221, lng:152.20961},map:map,icon: 'animated-fire-image-0299.gif'},
+                    {position:{lat:-30.12362, lng:152.21773},map:map,icon: 'animated-fire-image-0299.gif'}
+                    ]
+
+                //標出 marker
+                FireStations.forEach(function (e, i) {
+                    markers[i] = new google.maps.Marker(e);
+                    markers[i].setMap(map);
+                });
+
+                Fire.forEach(function (e, i) {
+                    markers[i] = new google.maps.Marker(e);
+                    markers[i].setMap(map);
+                });
+            }
+
+            
+
+            //- function drop() {
+            //-     for (var i = 0; i < neighborhoods.length; i++) {
+            //-         addMarkerWithTimeout(neighborhoods[i], i * 1200);
+            //-     }
+
+            //- }
+
+            //- function addMarkerWithTimeout(position, timeout) {
+            //-     window.setTimeout(function() {
+            //-         markers.push(new google.maps.Marker({
+            //-             position: position,
+            //-             map: map,
+            //-             animation: google.maps.Animation.DROP
+            //-         }));
+            //-     }, timeout);
+            //- }
+        //- script(src="/javascripts/DisasterMap.js")
+        script(async,defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYfm3cPeRGy3ItLPtOuGP1mlrcVpRqYc4&callback=initMap")
+        script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js",integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo",crossorigin="anonymous")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js",integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut",crossorigin="anonymous")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js",integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k",crossorigin="anonymous")
+        //- table
+        //-     thead
+        //-         tr
+        //-             th(scope="col") name
+        //-             th(scope="col") email
+        //-             th(scope="col") plane
+        //-             th(scope="col") plane_address
+        //-             th(scope="col") plane_level
+        //-             th(scope="col") flame retarfant
+        //-         tr
+        //-         tbody
+        //-             for resource in resources
+        //-                 tr
+        //-                 td
+        //-                     span #{resource.name}
+        //-                 td
+        //-                     span #{resource.email}
+        //-                 td
+        //-                     span #{resource.plane}
+        //-                 td
+        //-                     span #{resource.plane_address}
+        //-                 td
+        //-                     span #{resource.plane_level}
+        //-                 td
+        //-                     span #{resource.flm_rtd}
+        //-         tbody
+
+
+    //- [
+    //- {position:{lat:28.809462,lng:153.275054},map:map,title:"Fire and Rescue NSW Lismore Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:28.85301,lng:153.556765},map:map,title:"Fire and Rescue NSW Ballina Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:28.647431,lng:153.613338},map:map,title:"Fire and Rescue NSW Byron Bay Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:30.2988669,lng:153.112942},map:map,title:"Fire and Rescue NSW Coffs Harbour Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:30.527758,lng:151.6853234},map:map,title:"NSW Rural Fire Service", icon:'fire-station.png'},
+    //- {position:{lat:30.462526,lng:152.836822},map:map,title:"Scotchman Rural Fire Brigade", icon:'fire-station.png'},
+    //- {position:{lat:29.7368087,lng:151.7275328},map:map,title:"NSW Rural Fire Service", icon:'fire-station.png'},
+    //- {position:{lat:29.68908,lng:152.935502},map:map,title:"Fire and Rescue NSW Grafton Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:29.6315814,lng:153.0289566},map:map,title:"NSW Rural Fire Service", icon:'fire-station.png'},
+    //- {position:{lat:30.110147,lng:153.189754},map:map,title:"Fire and Rescue NSW Woolgoolga Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:30.350919,lng:153.0901694},map:map,title:"Fire and Rescue NSW Sawtell Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:28.6464668,lng:152.0854579},map:map,title:"Rural Fire Service - Liston", icon:'fire-station.png'},
+    //- {position:{lat:28.920362,lng:151.9308843},map:map,title:"Wallangarra Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:28.6541459,lng:151.9345355},map:map,title:"Stanthorpe Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:28.862981,lng:153.051414},map:map,title:"Fire and Rescue NSW Casino Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:30.3994971,lng:152.3525086},map:map,title:"Ebor Rural Fire Service", icon:'fire-station.png'},
+    //- {position:{lat:30.216469,lng:151.670271},map:map,title:"Fire and Rescue NSW Guyra Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:30.340552,lng:152.712959},map:map,title:"Fire and Rescue NSW Dorrigo Fire Station", icon:'fire-station.png'},
+    //- {position:{lat:29.0574268,lng:152.0130036},map:map,title:"NSW Rural Fire Service", icon:'fire-station.png'}}
+    //- ]

@@ -1,3 +1,4 @@
+const rescueResource = require('../service/rescueResource')
 exports.FirePoints = function(req, res, next) {
 
 
@@ -6,6 +7,7 @@ exports.FirePoints = function(req, res, next) {
         zoom: 8
     }
 
+    
 
     // res.render('disaster', { FireStations: JSON.stringify(FireStations), InitViewPoint: JSON.stringify(initPoint) })
     res.render('disaster', { InitViewPoint: JSON.stringify(initPoint) })

@@ -9,7 +9,27 @@ function get(req, res, next) {
     docquery
         .exec()
         .then(resources => {
+
             res.render('resource', { resources: resources })
+        }).catch(err => {
+            res.status(500).send(err)
+        })
+}
+
+function getPlane(req, res, next) {
+    const docquery = Resource.find({}).read(ReadPreference.NEAREST)
+    docquery
+        .exec()
+        .then(resources => {
+            let planes;
+            resources.map(resource => {
+                console.log(resource.plane_address)
+                planes.push(resource.plane_address)
+                res.render('rescue', { resources: planes })
+            })
+
+
+            // res.render('resource', { resources: resources })
         }).catch(err => {
             res.status(500).send(err)
         })
@@ -30,5 +50,6 @@ function create(req, res, next) {
 
 module.exports = {
     get,
-    create
+    create,
+    getPlane
 }
