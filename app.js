@@ -6,30 +6,28 @@ var logger = require('morgan');
 require('dotenv').config();
 
 
-var mongoose = require('mongoose')
-// mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
-//   auth: {
-//     user: process.env.COSMOSDB_USER,
-//     password: process.env.COSMOSDB_PASSWORD
-//   }
-// }).then(() => {
-//   console.log('Connection to CosmosDB successfully')
-// }).catch((err) => {
-//   console.log(err)
-// })
-
-
-var mongoURI = 'mongodb://localhost:27017/NASA2019'
-mongoose.connect(mongoURI, { useNewUrlParser: true })
-  .then(() => {
-    console.log('Now connected to MongoDB');
-  })
-  .catch((err) => {
-    console.error('Something went wrong: ', err)
-  })
+// var mongoose = require('mongoose')
 
 // var mongoClient = require("mongodb").MongoClient;
-// mongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, function (err, client) {
+// mongoClient.connect(process.env.COSMOSDB_URI, function (err, client) {
+//   var db = client.db("nasa-fire2")
+//   client.close()
+// });
+// var mongoURI = 'mongodb://localhost:27017/NASA2019'
+// mongoose.connect(mongoURI, { useNewUrlParser: true })
+//   .then(() => {
+//     console.log('Now connected to MongoDB');
+//   })
+//   .catch((err) => {
+//     console.error('Something went wrong: ', err)
+//   })
+
+// var mongoClient = require("mongodb").MongoClient;
+// mongoClient.connect(process.env.COSMOSDB_URI, { useNewUrlParser: true }, function (err, client) {
+
+//   const db = client.db('rescueResource')
+//   console.log(db);
+
 //   console.log('connect success')
 // });
 

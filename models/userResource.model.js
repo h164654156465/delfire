@@ -19,10 +19,6 @@ let ResourceSchema = new Schema({
         type: String,
         required: true
     },
-    plane_level: {
-        type: String,
-        required: true
-    },
     flm_rtd: {
         type: String,
         required: true

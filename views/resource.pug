@@ -1,30 +1,36 @@
-extends layout
+doctype html
+html(lang='en')
+    include common/head.pug
+    +head("Resource")
+    body
 
-block content
-
-    table
-        thead
-            tr
-                th(scope="col") name
-                th(scope="col") email
-                th(scope="col") plane
-                th(scope="col") plane_address
-                th(scope="col") plane_level
-                th(scope="col") flame retarfant
-            tr
-            tbody
-                for resource in resources
-                    tr
-                    td
-                        span #{resource.name}
-                    td
-                        span #{resource.email}
-                    td
-                        span #{resource.plane}
-                    td
-                        span #{resource.plane_address}
-                    td
-                        span #{resource.plane_level}
-                    td
-                        span #{resource.flm_rtd}
-            tbody
+        header
+            include common/navbar.pug
+            +navbar()
+            .container
+                .row.align-items.center 
+                    table.table.table-striped
+                        thead
+                        tr
+                            th(scope="col") name
+                            th(scope="col") email
+                            th(scope="col") plane
+                            th(scope="col") plane_address
+                            th(scope="col") flame retarfant
+                        tr
+                        tbody
+                            for resource in resources
+                                tr
+                                td
+                                    span #{resource.name}
+                                td
+                                    span #{resource.email}
+                                td
+                                    span #{resource.plane}
+                                td
+                                    span #{resource.plane_address}
+                                td
+                                    span #{resource.flm_rtd}
+                        tbody
+            include common/footer.pug
+                +footer()
