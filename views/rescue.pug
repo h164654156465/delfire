@@ -8,6 +8,7 @@ html(lang='en')
             include common/navbar.pug
             +navbar()
         div#map
+        //- h1 #{resources_planes}
         //- button(class="btn btn-warning" onclick="drop()") 時間一
         //- button(class="btn btn-warning" onclick="drop()") 時間二
         //- div#hidecontent(display:none)
@@ -21,7 +22,10 @@ html(lang='en')
             //- var neighborhoods = !{FirePoints}
 
             function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), !{InitViewPoint});
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: -29.9198, lng: 152.4337 },
+                    zoom: 10
+                });
 
                 
                 let FireStations = [
@@ -286,6 +290,10 @@ html(lang='en')
                     {position:{lat:-30.12362, lng:152.21773},map:map,icon: 'animated-fire-image-0299.gif'}
                     ]
 
+                let Planes = !{resources_planes}
+
+                let Fire_circle = JSON.parse('{"fire_locs": [{"center": {"lat": -28.98249, "lng": 152.30509999999998}, "radius": 0.011222728099725807}, {"center": {"lat": -30.132659999999998, "lng": 152.23064}, "radius": 0.07641243962208859}, {"center": {"lat": -29.70539, "lng": 152.44853}, "radius": 0.045298000000000734}, {"center": {"lat": -30.072, "lng": 152.92906}, "radius": 0.0009026034566754878}, {"center": {"lat": -28.91555, "lng": 153.51305}, "radius": 0.0}]}')
+
                 //標出 marker
                 FireStations.forEach(function (e, i) {
                     markers[i] = new google.maps.Marker(e);
@@ -296,6 +304,77 @@ html(lang='en')
                     markers[i] = new google.maps.Marker(e);
                     markers[i].setMap(map);
                 });
+
+                Planes.forEach(function (e, i) {
+                    //- console.log(e);
+                    markers[i] = new google.maps.Marker({
+                        position: e,
+                        map:map,
+                        icon:"plane.png"
+                    });
+                    markers[i].setMap(map);
+                });
+
+                Fire_circle.fire_locs.forEach(function (e, i) {
+                    markers[i] = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: e.center,
+                    radius: e.radius * 111 * 1000
+                    });
+                    markers[i].setMap(map);
+                });
+
+                function circle(cx, cy, px, py, r) {
+                    let ex = px - cx;
+                    let ey = py - cy;
+
+                    let t = r / Math.sqrt(ex * ex + ey * ey);
+                    let fx = ex * t;
+                    let fy = ey * t;
+
+                    let a = Math.acos(t);
+                    let gx = fx * Math.cos(a) - fy * Math.sin(a);
+                    let gy = fx * Math.sin(a) + fy * Math.cos(a);
+
+                    let hx = gx + cx;
+                    let hy = gy + cy;
+
+                    return {"lat":hy,"lng":hx};
+                }
+
+                var flightPath = new google.maps.Polyline({
+                    path: [{"lat": -30.371, "lng": 152.698},{"lat": -30.2087, "lng": 152.20768}],
+                    geodesic: true,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                });
+
+                flightPath.setMap(map);
+
+                flightPath = new google.maps.Polyline({
+                    path: [{"lat": -29.790, "lng": 151.836},{"lat": -30.06999, "lng": 152.282824}],
+                    geodesic: true,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                });
+                flightPath.setMap(map);
+
+                flightPath = new google.maps.Polyline({
+                    path: [{"lat": -29.613, "lng": 152.894},{"lat": -29.66216, "lng": 152.476}],
+                    geodesic: true,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                });
+                flightPath.setMap(map);
+
             }
 
             
